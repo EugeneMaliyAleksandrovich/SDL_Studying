@@ -7,7 +7,6 @@ public:
 	float x;
 	float y;
 	
-	Vector2D();
 	Vector2D(float x = 0.0f, float y = 0.0f);
 
 	Vector2D& add(const Vector2D& vector);

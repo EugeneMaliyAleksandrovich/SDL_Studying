@@ -1,7 +1,5 @@
 #include "Vector2D.hpp"
 
-Vector2D::Vector2D() : x(0.0f), y(0.0f) { }
-
 Vector2D::Vector2D(float mx, float my) : x(mx), y(my) { }
 
 Vector2D& Vector2D::add(const Vector2D& vector) {
