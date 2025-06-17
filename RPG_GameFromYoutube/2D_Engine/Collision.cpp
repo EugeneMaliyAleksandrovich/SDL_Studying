@@ -1,4 +1,5 @@
 #include "Collision.hpp"
+#include "ECS/ColliderComponent.hpp"
 
 bool Collision::AABB(const SDL_Rect& rectA, const SDL_Rect& rectB) {
 	
@@ -9,4 +10,12 @@ bool Collision::AABB(const SDL_Rect& rectA, const SDL_Rect& rectB) {
 
 	return result;
 
+}
+
+bool Collision::AABB(const ColliderComponent& colA, const ColliderComponent& colB) {
+	bool result = AABB(colA.collider, colB.collider);
+	if(result)
+		std::cout << colA.tag << " hit: " << colB.tag << std::endl;
+
+	return result;
 }
