@@ -1,78 +1,33 @@
 #include "Map.hpp"
-#include "TextureManager.hpp"
-
-int lvl1[20][25] = {
-	{0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,1,1,1,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,2,2,2,2,1,1,2,1,2,2,1,2,2,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-};
+#include "Game.hpp"
+#include <fstream>
 
 Map::Map() {
-	dirt = TextureManager::loadTexture("assets/dirt.png");
-	water = TextureManager::loadTexture("assets/water.png");
-	grass = TextureManager::loadTexture("assets/grass.png");
-
-	srcRect.x = srcRect.y = 0;
-	srcRect.w = destRect.w = 32;
-	srcRect.h = destRect.h = 32;
-
-	loadMap(lvl1);
 }
 
 Map::~Map() {
-	SDL_DestroyTexture(grass);
-	SDL_DestroyTexture(dirt);
-	SDL_DestroyTexture(water);
 }
 
-void Map::loadMap(int arr[20][25]) {
-	for (int row = 0; row < 20; row++) {
-		for (int column = 0; column < 25; column++) {
-			map[row][column] = arr[row][column];
-		}
-	}
-}
+void Map::loadMap(std::string path, int sizeX, int sizeY) {
+	char tile;
+	std::fstream mapFile;
+	mapFile.open(path);
 
-void Map::drawMap() {
-	int type = 0;
-	for (int row = 0; row < 20; row++) {
-		for (int column = 0; column < 25; column++) {
-			type = map[row][column];
-
-			destRect.x = column * 32;
-			destRect.y = row * 32;
-
-
-			switch (type) {
-			case 0:
-				TextureManager::draw(water, srcRect, destRect);
-				break;
-			case 1:
-				TextureManager::draw(grass, srcRect, destRect);
-				break;
-			case 2:
-				TextureManager::draw(dirt, srcRect, destRect);
-				break;
-			default:
+	for (int y = 0; y < sizeY; ) {
+		for (int x = 0; ; ) {
+			mapFile.get(tile);
+			if (tile == '0' || tile == '1' || tile == '2') {
+				Game::addTile(atoi(&tile), x * 32, y * 32);
+				x++;
+			}
+			if (tile == '\n') {
+				y++;
 				break;
 			}
 		}
 	}
+
+	mapFile.close();
 }
+
+

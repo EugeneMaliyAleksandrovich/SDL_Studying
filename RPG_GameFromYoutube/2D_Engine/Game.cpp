@@ -56,13 +56,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 
 	map = new Map();
+	map->loadMap("assets/16x16.map", 16, 16);
 	
-	tile0.addComponent<TileComponent>(200, 200, 32, 32, 0);
-	tile1.addComponent<TileComponent>(250, 250, 32, 32, 1);
-	tile1.addComponent<ColliderComponent>("dirt");
-	tile2.addComponent<TileComponent>(150, 150, 32, 32, 2);
-	tile2.addComponent<ColliderComponent>("grass");
-
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/player.png");
 	player.addComponent<KeyboardController>();
@@ -98,7 +93,6 @@ void Game::update() {
 
 void Game::render() {
 	SDL_RenderClear(renderer);
-	//map->drawMap();
 	manager.draw();
 	SDL_RenderPresent(renderer);
 }
@@ -109,4 +103,9 @@ void Game::clean() {
 	SDL_Quit();
 
 	std::cout << "Game cleaned..." << std::endl;
+}
+
+void Game::addTile(int id, int x, int y) {
+	auto& tile(manager.addEntity());
+	tile.addComponent<TileComponent>(x, y, 32, 32, id);
 }
