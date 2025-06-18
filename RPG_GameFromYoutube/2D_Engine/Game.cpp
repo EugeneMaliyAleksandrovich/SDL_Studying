@@ -20,6 +20,8 @@ auto& tile2(manager.addEntity());
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
 
+const char* mapFile = "assets/terrain_ss.png";
+
 enum groupLabels : std::size_t {
 	GROUP_MAP,
 	GROUP_PLAYERS,
@@ -62,18 +64,13 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 
 	map = new Map();
-	map->loadMap("assets/16x16.map", 16, 16);
+	map->loadMap("assets/map.map", 25, 20);
 	
-	player.addComponent<TransformComponent>();
+	player.addComponent<TransformComponent>(4);
 	player.addComponent<SpriteComponent>("assets/player_anims.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(GROUP_PLAYERS);
-
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-	wall.addComponent<SpriteComponent>("assets/dirt.png");
-	wall.addComponent<ColliderComponent>("wall");
-	wall.addGroup(GROUP_MAP);
 
 }
 
@@ -126,8 +123,8 @@ void Game::clean() {
 	std::cout << "Game cleaned..." << std::endl;
 }
 
-void Game::addTile(int id, int x, int y) {
+void Game::addTile(int srcX, int srcY, int xpos, int ypos) {
 	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 32, 32, id);
+	tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapFile);
 	tile.addGroup(GROUP_MAP);
 }
