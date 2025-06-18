@@ -65,7 +65,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	map->loadMap("assets/16x16.map", 16, 16);
 	
 	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("assets/player.png");
+	player.addComponent<SpriteComponent>("assets/player_anims.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(GROUP_PLAYERS);
