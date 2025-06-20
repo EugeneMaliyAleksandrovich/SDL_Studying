@@ -7,10 +7,11 @@ extern "C" {
 #include <iostream>
 #include <vector>
 
+class AssetManager;
+
 class ColliderComponent;
 
 class Game {
-
 public:
 	Game();
 	~Game();
@@ -27,16 +28,16 @@ public:
 	static SDL_Event event;
 	static bool isRunning;
 	static SDL_Rect camera;
+	static AssetManager* assets;
 
 	enum groupLabels : std::size_t {
 		GROUP_MAP,
 		GROUP_PLAYERS,
-		GROUP_COLLIDERS
+		GROUP_COLLIDERS,
+		GROUP_PROJECTILES
 	};
 
 private:
 	int cnt = 0;
 	SDL_Window *window;
-	
-
 };
