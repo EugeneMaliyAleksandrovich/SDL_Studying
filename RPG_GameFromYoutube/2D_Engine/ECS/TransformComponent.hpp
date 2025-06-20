@@ -15,7 +15,12 @@ public:
 	int speed = 3;
 
 	TransformComponent() { position.zero(); }
-	TransformComponent(int sc) : scale(sc) { position.zero(); }
+	
+	TransformComponent(int sc) : scale(sc) { 
+		position.x = 400;
+		position.y = 320;
+	}
+
 	TransformComponent(float x, float y) : position(Vector2D(x, y)) {}
 	TransformComponent(float x, float y, int h, int w, int sc) 
 			: position(Vector2D(x, y)), height(h), width(w), scale(sc) {}
@@ -25,8 +30,7 @@ public:
 	}
 
 	void update() override {
-		position.x = position.x + velocity.x * speed;
-		position.y = position.y + velocity.y * speed;
+
 	}
 
 };
