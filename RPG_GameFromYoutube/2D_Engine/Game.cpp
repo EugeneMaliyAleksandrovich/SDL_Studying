@@ -13,6 +13,8 @@ SDL_Renderer* Game::renderer = nullptr;
 
 Manager manager;
 SDL_Event Game::event;
+SDL_Rect Game::camera = { 0, 0, 800, 640 };
+
 std::vector<ColliderComponent*> Game::colliders;
 
 auto& tile0(manager.addEntity());
@@ -97,15 +99,19 @@ void Game::update() {
 	manager.refresh();
 	manager.update();
 
-	Vector2D playerVelocity = player.getComponent<TransformComponent>().velocity;
-	int playerSpeed = player.getComponent<TransformComponent>().speed;
+	camera.x = player.getComponent<TransformComponent>().position.x - 400;
+	camera.y = player.getComponent<TransformComponent>().position.y - 320;
 
-	for (auto t : tiles) {
-		t->getComponent<TileComponent>().destRect.x += -(playerVelocity.x * playerSpeed);
-		t->getComponent<TileComponent>().destRect.y += -(playerVelocity.y * playerSpeed);
-	}
+	if (camera.x < 0)
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
+	if (camera.x > camera.w)
+		camera.x = camera.w;
+	if (camera.y > camera.h)
+		camera.y = camera.h;
 }
-
+	
 
 void Game::render() {
 	SDL_RenderClear(renderer);
